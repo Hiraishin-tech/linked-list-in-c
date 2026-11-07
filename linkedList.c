@@ -79,22 +79,26 @@ void printList(Person *head) {
     }
 }
 
-void personRemove(Person *head, char *nameToRem) {
-    if(!strcmp(head->name, nameToRem)) {
-        Person *pNext = head->nextPerson;
-        free(head);
-        head = pNext;
+void personRemove(Person **head, char *nameToRem) {
+    Person *curr = *head;
+    /* printf(">> %p\n", curr); */
+    if(curr && !strcmp((curr)->name, nameToRem)) {
+        Person *pNext = (curr)->nextPerson;
+        free(curr);
+        curr = pNext;
+        return;
     }
-   
-   while(head->nextPerson && strcmp(head->nextPerson->name, nameToRem)) {
-       head = head->nextPerson;
-   }
-   // found the person behind the one that is trying to remove, now point to the next Person
-   Person *tempHead = head->nextPerson;
-   head = tempHead->nextPerson;
-   printf(">>To Remove Name: %s, Age: %d\n", tempHead->name, tempHead->age);
-   printf(">>Head Name: %s, Age: %d\n", head->name, head->age);
-   free(tempHead);
+
+    while((curr)->nextPerson && strcmp((curr)->nextPerson->name, nameToRem)) {
+        curr = (curr)->nextPerson;
+    }
+    // found the person behind the one that is trying to remove, now point to the next Person
+    Person *tempHead = (curr)->nextPerson;
+    curr->nextPerson = tempHead->nextPerson;
+    /* printf(">>To Remove Name: %s, Age: %d\n", tempHead->name, tempHead->age); */
+    /* printf(">>Curr Name: %s, Age: %d\n", (curr)->name, (curr)->age); */
+    /* printf(">>Head Name: %s, Age: %d\n", (*head)->name, (*head)->age); */
+    free(tempHead);
 }
 
 void freeList(Person *head) {
@@ -125,7 +129,7 @@ int main() {
     printPerson(searchP, "Searched Person");
 
 
-    personRemove(head, "Bob");
+    personRemove(&head, "Jonah");
     puts("");
     // Traverse and print the list
     Person *temp2 = head; // first Node
