@@ -2,9 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* listFind (hledání podle jména) */
-/* personRemove (smazání prvku, tady se hodí ukazatel na ukazatel nebo hlídání předchozího prvku) */
-
 typedef struct Person {
     char* name;
     int age;
@@ -140,7 +137,7 @@ int main() {
     Person *searchP = listFind(head, "Lucia");
     printPerson(searchP, "Searched Person");
 
-    personRemove(&head, "Lucia");
+    personRemove(&head, "Bob");
     puts("");
     // Traverse and print the list
     Person *temp2 = head; // first Node
