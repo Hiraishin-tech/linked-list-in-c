@@ -11,7 +11,6 @@ typedef struct Person {
     struct Person *nextPerson;
 } Person;
 
-
 void printPerson(Person *person, char *comment) {
     if (person == NULL) {
         fprintf(stderr, "%s is NULL\n", comment);
@@ -82,13 +81,19 @@ void printList(Person *head) {
 void personRemove(Person **head, char *nameToRem) {
     Person *curr = *head;
     /* printf(">> %p\n", curr); */
-    if(curr && !strcmp(curr->name, nameToRem)) {
-        Person *pNext = curr->nextPerson;
-        free(curr);
-        curr = pNext;
+
+    // When the list is empty:
+    if(curr == NULL) {
+        fprintf(stderr, "The list is empty.");
         return;
     }
 
+    if(curr && !strcmp(curr->name, nameToRem)) {
+        Person *pNext = curr->nextPerson;
+        *head = pNext; // must not forget to point the head in main to the next Person.
+        free(curr);
+        return;
+    }
 
     while(curr->nextPerson && strcmp(curr->nextPerson->name, nameToRem)) {
         curr = curr->nextPerson;
@@ -135,8 +140,7 @@ int main() {
     Person *searchP = listFind(head, "Lucia");
     printPerson(searchP, "Searched Person");
 
-
-    personRemove(&head, "Tomas");
+    personRemove(&head, "Lucia");
     puts("");
     // Traverse and print the list
     Person *temp2 = head; // first Node
